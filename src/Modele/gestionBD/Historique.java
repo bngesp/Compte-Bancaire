@@ -20,6 +20,7 @@ public class Historique {
 	public Historique() {
 		
 	}	
+	
 	public Historique(int id, double soldeInitial, double soldeFinal,
 			Date date, Compte compte) {
 		super();
@@ -89,11 +90,11 @@ public class Historique {
 			
 			while(resultats.next()){
 				Historique c= new Historique();
-				c.setId(resultats.getInt(0));
-				c.setSoldeInitial(resultats.getDouble(1));
-				c.setSoldeFinal(resultats.getDouble(2));
-				c.setDate(resultats.getDate(3));
-				c.setCompte(Compte.consulterCompte(resultats.getInt(4)));
+				c.setId(resultats.getInt(1));
+				c.setSoldeInitial(resultats.getDouble(2));
+				c.setSoldeFinal(resultats.getDouble(3));
+				c.setDate(resultats.getDate(4));
+				c.setCompte(Compte.consulterCompte(resultats.getInt(5)));
 				histo.add(c);
 			}
 			connect.close();

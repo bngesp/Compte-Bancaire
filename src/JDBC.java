@@ -6,7 +6,7 @@ public class JDBC {
 	 
 try{
 	Class.forName("com.mysql.jdbc.Driver");
-	Connection conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/CompteBancaire","root","root");
+	Connection conn= DriverManager.getConnection("jdbc:mysql://127.0.0.1:8889/CompteBancaire","root","root");
 //	PreparedStatement ps=conn.prepareStatement("select*client");
 //	ResultSet rs=ps.executeQuery();
 //	while(rs.next()){

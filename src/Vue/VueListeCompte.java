@@ -40,6 +40,10 @@ public class VueListeCompte extends JPanel {
 				"Numero", "Solde ", "Nom", "Prenom"
 			}
 		) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 			Class[] columnTypes = new Class[] {
 				Integer.class, Double.class, String.class, String.class
 			};

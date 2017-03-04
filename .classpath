@@ -12,6 +12,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/Compte Bancaire/lib/jgoodies-common-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/bng/Downloads/mysql-connector-java-5.1-2.40/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-5.1.40-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

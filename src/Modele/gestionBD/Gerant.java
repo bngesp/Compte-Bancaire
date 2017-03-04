@@ -17,7 +17,7 @@ public class Gerant extends Personne {
 	private static Connection connect;
 	
 	public Gerant(String nom, String prenom, String adresse, long cNI,
-			long telephone, String login, String password) {
+			String telephone, String login, String password) {
 		super(nom, prenom, adresse, cNI, telephone);
 		this.login = login;
 		this.password = password;
@@ -78,7 +78,7 @@ public class Gerant extends Personne {
 			sta.setString(2,gr.getPrenom());
 			sta.setString(3,gr.getAdresse());
 			sta.setLong(4,gr.getCNI());
-			sta.setLong(5,gr.getTelephone());
+			sta.setString(5,gr.getTelephone());
 			sta.setString(6,gr.getLogin());
 			sta.setString(7,gr.getPassword());
 			sta.setString(8,gr.getProfil().toString());
@@ -102,7 +102,7 @@ public class Gerant extends Personne {
 			sta.setString(2,pass);
 			sta.setString(3,profil);
 			ResultSet resultat=sta.executeQuery();
-			connect.close();
+			
 			resultat.next();
 			return resultat.getInt(1) != 0;
 		}catch(SQLException e){

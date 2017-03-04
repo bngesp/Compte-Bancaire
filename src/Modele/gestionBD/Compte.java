@@ -60,7 +60,7 @@ public class Compte {
 	}
 
 	public void debit(double somme){
-		
+		if(this.solde < somme) throw new IllegalArgumentException();
 		double soldeinit = this.solde;
 		this.solde-=somme;
 		updateCompte();
@@ -74,7 +74,7 @@ public class Compte {
 			PreparedStatement sta=connect.prepareStatement(req);
 			sta.setDouble(1,this.getSolde());
 			sta.setDouble(2,this.getDecouvert());
-			sta.setInt(2,this.getNumero());
+			sta.setInt(3,this.getNumero());
 			sta.execute();
 			connect.close();
 		}catch(SQLException e){

@@ -5,12 +5,12 @@ public class Personne {
 	private String prenom;
 	private String adresse;
 	private long CNI;
-	private long telephone;
+	private String telephone;
 	
 	
 	
 	public Personne(String nom, String prenom, String adresse, long cNI,
-			long telephone) {
+			String telephone) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -43,10 +43,10 @@ public class Personne {
 	public void setCNI(long cNI) {
 		CNI = cNI;
 	}
-	public long getTelephone() {
+	public String getTelephone() {
 		return telephone;
 	}
-	public void setTelephone(long telephone) {
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
 	
