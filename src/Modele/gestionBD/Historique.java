@@ -84,7 +84,7 @@ public class Historique {
 		
 		try{
 			connect = Connexion.getConnection();
-			String req = "select * from historique where numero_compte = "+numeroCompte;
+			String req = "select * from historique where numero_compte = "+numeroCompte+" ORDER BY id DESC LIMIT 3";
 			Statement s= connect.createStatement();
 			ResultSet resultats=s.executeQuery(req);
 			

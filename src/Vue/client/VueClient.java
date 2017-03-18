@@ -62,13 +62,22 @@ public class VueClient extends JFrame{
 		this.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblBienvenue = new JLabel("      Bienvenue <dynamic> <dynamic>");
+		JLabel lblBienvenue = new JLabel("      Bienvenue "+client.getPrenom()+" "+client.getNom());
 		lblBienvenue.setForeground(Color.BLUE);
 		lblBienvenue.setFont(new Font("Sitka Text", Font.BOLD, 15));
 		panel.add(lblBienvenue);
 		
 		JButton btnDeconnexion = new JButton("");
 		btnDeconnexion.setBorder(null);
+		btnDeconnexion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int j = JOptionPane.showConfirmDialog(VueClient.this, "voulez vous vraiement quitter ?");
+				if(j == 0)
+					System.exit(0);
+			}
+		});
 		btnDeconnexion.setToolTipText("deconnexion");
 		btnDeconnexion.setIcon(new ImageIcon(VueClient.class.getResource("/com/sun/javafx/scene/control/skin/caspian/dialog-error.png")));
 		panel.add(btnDeconnexion, BorderLayout.EAST);

@@ -175,7 +175,7 @@ public class Main extends JFrame {
 	
 	private void ihm(String profil){
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/Vue/images/logo.jpg")));
-		//setResizable(false);
+		setResizable(false);
 		//setIconImage(new ImageIcon("images/logo.jpg").getImage());
 		setTitle("Application de gestion de comptes bancaires");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
