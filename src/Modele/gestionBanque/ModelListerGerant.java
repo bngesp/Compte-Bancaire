@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import Modele.gestionBD.Gerant;
+import Modele.gestionBD.Profil;
 import Modele.gestionBD.Gerant;
 
 public class ModelListerGerant extends AbstractTableModel{
@@ -48,7 +49,7 @@ public class ModelListerGerant extends AbstractTableModel{
 			case 0 : return clients.get(rowIndex).getCNI();
 			case 1 : return clients.get(rowIndex).getNom();
 			case 2 : return clients.get(rowIndex).getPrenom();
-			case 3 : return clients.get(rowIndex).getProfil().toString();
+			case 3 : return Profil.getNomProfil(clients.get(rowIndex).getProfil());
 			default : return null;
 		}
 		
@@ -80,4 +81,6 @@ public class ModelListerGerant extends AbstractTableModel{
 	public Gerant getGerantAt(int index){
 		return this.clients.get(index);
 	}
+	
+	
 }

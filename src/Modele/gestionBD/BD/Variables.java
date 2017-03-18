@@ -1,5 +1,6 @@
 package Modele.gestionBD.BD;
 
+
 public class Variables {
 	static String NOMBD="CompteBancaire";
 	static int PORT=8889;

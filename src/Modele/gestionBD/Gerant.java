@@ -165,6 +165,7 @@ public class Gerant extends Personne {
 				c.setTelephone(resultats.getString(5));
 				c.setLogin(resultats.getString(6));
 				c.setPassword(resultats.getString(7));
+				c.setProfil(Profil.getProfil(resultats.getString(8)));
 				listGerant.add(c);
 			}
 			connect.close();

@@ -30,6 +30,17 @@ public enum Profil {
 		
 	}
 	
+	public static String getNomProfil(Profil p){
+		if(p.compareTo(ADMINISTRATEURBANQUE) == 0)
+			return "ADMINISTRATEUR";
+		else if(p.compareTo(AGENTCAISSE) == 0)
+			return "CAISSE";
+		else if(p.compareTo(AGENTCOMPTABLE) == 0)
+			return "COMPTABLE";
+		
+		else	return "DIRECTEUR";
+		
+	}
 
 
 }
