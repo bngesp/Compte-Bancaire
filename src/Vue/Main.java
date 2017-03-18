@@ -1,32 +1,37 @@
 package Vue;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.UIManager;
-import java.awt.SystemColor;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.ImageIcon;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-import javax.swing.SwingConstants;
-import java.awt.Toolkit;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import Vue.admin.client.VueClientAdmin;
+import Vue.compte.VueCompte;
+import Vue.gerant.VueGerant;
+import Vue.operation.VueOperations;
 
 public class Main extends JFrame {
 
 	private JPanel contentPane;
+	private CardLayout layout;
+	private JPanel principal;
 
 	/**
 	 * Launch the application.
@@ -35,7 +40,7 @@ public class Main extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main frame = new Main();
+					new Main(null);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,15 +52,136 @@ public class Main extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Main() {
+	public Main(String profil ) {
+		layout = new CardLayout(0, 0);
+		System.out.println(profil);
+		ihm(profil);
+		accueil(profil);
+		compte();
+		client();
+		this.principal.add(new VueOperations(),"operation");
+		this.principal.add(new VueGerant(),"gerant");
+	}
+	
+	public void addMenu(String profil){
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnAccueil = new JMenu("Accueil");
+		mnAccueil.setMnemonic('A');
+		menuBar.add(mnAccueil);
+		
+		JMenuItem mntmDeconnexion = new JMenuItem("deconnexion");
+		mnAccueil.add(mntmDeconnexion);
+		mntmDeconnexion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+				
+			}
+		});
+		
+		if(profil.equals("ADMINISTRATEUR") || profil.equals("DIRECTEUR") ){
+			JMenuItem mnGerant = new JMenuItem("Gerant");
+			mnGerant.setMnemonic('g');
+			menuBar.add(mnGerant);
+			
+			mnGerant.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)principal.getLayout()).show(principal, "gerant");
+					principal.repaint();
+					principal.validate();
+				}
+			});
+			
+		}
+		
+		
+		if(profil.equals("ADMINISTRATEUR") || profil.equals("DIRECTEUR") || profil.equals("CAISSE"))
+		{
+			JMenuItem mnAction = new JMenuItem("Comptes");
+			mnAction.setMnemonic('c');
+			menuBar.add(mnAction);
+			
+			
+			JMenuItem mnClients = new JMenuItem("Clients");
+			mnClients.setMnemonic('l');
+			menuBar.add(mnClients);
+			mnClients.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)principal.getLayout()).show(principal, "client");
+					principal.repaint();
+					principal.validate();
+					
+				}
+			});
+			
+			mnAction.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)principal.getLayout()).show(principal, "compte");
+					principal.repaint();
+					principal.validate();
+				}
+			});
+		}
+		
+		if(profil.equals("ADMINISTRATEUR") || profil.equals("DIRECTEUR") || profil.equals("COMPTABLE"))
+		{
+			JMenuItem mntmOperations = new JMenuItem("Operations");
+			menuBar.add(mntmOperations);
+			
+			mntmOperations.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)principal.getLayout()).show(principal, "operation");
+					principal.repaint();
+					principal.validate();
+				}
+			});
+		}
+		
+		
+		
+		JMenuItem mnAPropos = new JMenuItem("A propos");
+		mnAPropos.setMnemonic('p');
+		menuBar.add(mnAPropos);
+		
+		JMenuItem mnAide = new JMenuItem("Aide ?");
+		mnAide.setMnemonic('i');
+		menuBar.add(mnAide);
+		
+		//listener
+		mnAccueil.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				((CardLayout)principal.getLayout()).show(principal, "accueil");
+				principal.repaint();
+				principal.validate();
+			}
+		});
+		
+		
+		
+	}
+	
+	private void ihm(String profil){
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/Vue/images/logo.jpg")));
-		setResizable(false);
+		//setResizable(false);
 		//setIconImage(new ImageIcon("images/logo.jpg").getImage());
 		setTitle("Application de gestion de comptes bancaires");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 708, 478);
+		setBounds(100, 100, 790, 478);
 		setVisible(true);
-		addMenu();
+		addMenu(profil);
 		
 		
 		contentPane = new JPanel();
@@ -74,12 +200,14 @@ public class Main extends JFrame {
 		lblNewLabel.setFont(new Font("Sitka Text", Font.BOLD, 23));
 		panel.add(lblNewLabel);
 		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new CardLayout(0, 0));
-		
+		principal = new JPanel();
+		contentPane.add(principal, BorderLayout.CENTER);
+		principal.setLayout(layout);
+	}
+
+	private void accueil(String profil){
 		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2, "name_133045877247657");
+		principal.add(panel_2, "accueil");
 		panel_2.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		JPanel panel_3 = new JPanel();
@@ -117,81 +245,31 @@ public class Main extends JFrame {
 		
 		JPanel panel_6 = new JPanel();
 		panel_4.add(panel_6);
-		
+		final String debut;
+		if(profil.equals("CAISSE"))
+			 debut = "compte";
+		else if(profil.equals("ADMINISTRATEUR") || profil.equals("DIRECTEUR"))
+				debut = "gerant";
+		else  debut = "operation";
 		JButton button = new JButton("Demarrer");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				((CardLayout)principal.getLayout()).show(principal, debut );
+				principal.repaint();
+				principal.validate();
+			}
+		});
 		button.setForeground(new Color(65, 105, 225));
 		button.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		button.setBackground(Color.GREEN);
 		panel_6.add(button);
 	}
-	
-	public void addMenu(){
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
-		JMenu mnAccueil = new JMenu("Accueil");
-		mnAccueil.setMnemonic('A');
-		menuBar.add(mnAccueil);
-		
-		JMenu mnAction = new JMenu("Comptes");
-		mnAction.setMnemonic('c');
-		menuBar.add(mnAction);
-		
-		JMenuItem mntmLister = new JMenuItem("Lister");
-		mntmLister.setHorizontalAlignment(SwingConstants.CENTER);
-		mntmLister.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
-		mnAction.add(mntmLister);
-		
-		JMenuItem mntmModifier = new JMenuItem("Modifier");
-		mntmModifier.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK));
-		mnAction.add(mntmModifier);
-		
-		JMenuItem mntmFermer = new JMenuItem("Fermer");
-		mntmFermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-		mnAction.add(mntmFermer);
-		
-		JMenu mnClients = new JMenu("Clients");
-		mnClients.setMnemonic('l');
-		menuBar.add(mnClients);
-		
-		JMenuItem mntmLister_1 = new JMenuItem("Lister");
-		mnClients.add(mntmLister_1);
-		
-		JMenuItem mntmAjouter = new JMenuItem("Ajouter");
-		mnClients.add(mntmAjouter);
-		
-		JMenuItem mntmModifier_1 = new JMenuItem("Modifier");
-		mnClients.add(mntmModifier_1);
-		
-		JMenuItem mntmSupprimer = new JMenuItem("Supprimer");
-		mnClients.add(mntmSupprimer);
-		
-		JMenu mnOprations = new JMenu("Op\u00E9rations");
-		mnOprations.setMnemonic('o');
-		menuBar.add(mnOprations);
-		
-		JMenuItem mntmDepot = new JMenuItem("depot");
-		mntmDepot.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
-		mnOprations.add(mntmDepot);
-		
-		JMenuItem mntmRetrait = new JMenuItem("retrait");
-		mntmRetrait.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
-		mnOprations.add(mntmRetrait);
-		
-		JMenuItem mntmConsultation = new JMenuItem("consultation");
-		mnOprations.add(mntmConsultation);
-		
-		JMenuItem mntmHistorique = new JMenuItem("historique");
-		mnOprations.add(mntmHistorique);
-		
-		JMenu mnAPropos = new JMenu("A propos");
-		mnAPropos.setMnemonic('p');
-		menuBar.add(mnAPropos);
-		
-		JMenu mnAide = new JMenu("Aide ?");
-		mnAide.setMnemonic('i');
-		menuBar.add(mnAide);
+
+	private void compte(){
+		this.principal.add(new VueCompte(),"compte");
 	}
-
-
+	private void client(){
+		this.principal.add(new VueClientAdmin(),"client");
+	}
+	
 }

@@ -23,7 +23,7 @@ public class CtlConnexion {
     {
         if(model.authentifierAgent())
         {
-            new Main();
+            new Main(model.getProfil());
             vue.setVisible(false);
             vue.dispose();
         }

@@ -19,7 +19,7 @@ public class Client extends Personne {
     
     public Client()
     {
-    	this("", "", "", 0, "", 0);
+    	this(null, null, "", 0, "", 0);
     }
     
 	public Client(String nom, String prenom, String adresse, long cNI,
@@ -72,13 +72,13 @@ public class Client extends Personne {
 			ResultSet resultats=s.executeQuery(req);
 			
 			resultats.next();
-			c.setNom(resultats.getString(1));
-			c.setPrenom(resultats.getString(2));
-			c.setAdresse(resultats.getString(3));
-			c.setCNI(resultats.getLong(0));
-			c.setTelephone(resultats.getString(4));
-			c.setCodeSecret(resultats.getInt(5));
-			c.setCompte(Compte.consulterCompte(resultats.getInt(6)));
+			c.setNom(resultats.getString(2));
+			c.setPrenom(resultats.getString(3));
+			c.setAdresse(resultats.getString(4));
+			c.setCNI(resultats.getLong(1));
+			c.setTelephone(resultats.getString(5));
+			c.setCodeSecret(resultats.getInt(6));
+			c.setCompte(Compte.consulterCompte(resultats.getInt(7)));
 			connect.close();
 		}catch(SQLException e)
 		{
@@ -98,13 +98,13 @@ public class Client extends Personne {
 			
 			while(resultats.next()){
 				Client c= new Client();
-				c.setNom(resultats.getString(1));
-				c.setPrenom(resultats.getString(2));
-				c.setAdresse(resultats.getString(3));
-				c.setCNI(resultats.getLong(0));
-				c.setTelephone(resultats.getString(4));
-				c.setCodeSecret(resultats.getInt(5));
-				c.setCompte(Compte.consulterCompte(resultats.getInt(6)));
+				c.setNom(resultats.getString(2));
+				c.setPrenom(resultats.getString(3));
+				c.setAdresse(resultats.getString(4));
+				c.setCNI(resultats.getLong(1));
+				c.setTelephone(resultats.getString(5));
+				c.setCodeSecret(resultats.getInt(6));
+				c.setCompte(Compte.consulterCompte(resultats.getInt(7)));
 				listClient.add(c);
 			}
 			connect.close();
@@ -164,6 +164,38 @@ public class Client extends Personne {
 			
 			connect= Connexion.getConnection();
 			String req = "select * from client where codesecret='"+secret+"' and compte_numero='"+number+"'";
+			Statement s= connect.createStatement();
+			ResultSet resultats=s.executeQuery(req);
+			
+			resultats.next();
+			System.out.println(resultats.getInt(1));
+			c.setNom(resultats.getString(2));
+			c.setPrenom(resultats.getString(3));
+			c.setAdresse(resultats.getString(4));
+			c.setCNI(resultats.getLong(1));
+			c.setTelephone(resultats.getString(5));
+			c.setCodeSecret(resultats.getInt(6));
+			c.setCompte(Compte.consulterCompte(resultats.getInt(7)));
+			
+			
+			connect.close();
+		}catch(SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		return c; 
+		
+	}
+
+	public static Client getClientByCompte(Compte cpt){
+		Client c = new Client();
+		try{
+			//System.out.println(number);
+			//System.out.println(sec);
+			
+			connect= Connexion.getConnection();
+			String req = "select * from client where compte_numero='"+cpt.getNumero()+"'";
 			Statement s= connect.createStatement();
 			ResultSet resultats=s.executeQuery(req);
 			

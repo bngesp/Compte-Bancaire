@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Compte {
 	private int numero;
@@ -15,10 +16,14 @@ public class Compte {
 	private double decouvert;
 	private static Connection connect;
 	
+	
+	
 	public Compte(){
 		this(0, 0, 0);
 	}
-	
+	public Compte(int Numero){
+		this.numero = Numero;
+	}
 	public Compte(int numero, double solde, double decouvert) {
 		super();
 		this.numero = numero;
@@ -133,18 +138,73 @@ public class Compte {
 		return val;
 		
 	}
-	public static void fermerCompte(int numero){
+	public static boolean fermerCompte(int numero){
+		boolean b=true;
 		try{
 			connect=Connexion.getConnection();
 			String req = "delete from compte where numero = ?";
 			PreparedStatement sta=connect.prepareStatement(req);
 			sta.setInt(1,numero);
-			sta.execute();
+			b=sta.execute();
 			connect.close();
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 		}
+		return b;
 	}
 	
+	public static ArrayList<Compte> getListeCompte(){
+		ArrayList<Compte> listClient = new ArrayList<Compte>();
+		
+		try{
+			connect= Connexion.getConnection();
+			String req = "select * from compte";
+			Statement s= connect.createStatement();
+			ResultSet resultats=s.executeQuery(req);
+			
+			while(resultats.next()){
+				Compte c= new Compte();
+				c.setNumero(resultats.getInt(1));
+				c.setSolde(resultats.getDouble(2));
+				c.setDecouvert(resultats.getDouble(3));
+				//c.setCompte(Compte.consulterCompte(resultats.getInt(6)));
+				listClient.add(c);
+			}
+			connect.close();
+		}catch(SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		return listClient;
+	}
+	
+	
+	public static Integer []  getListeCompteSansClient(){
+		ArrayList<Integer> listClient = new ArrayList<Integer>();
+		
+		try{
+			connect= Connexion.getConnection();
+			String req = "SELECT numero FROM Compte where numero not in (select numero from compte inner join client on client.compte_numero=compte.numero)";
+			Statement s= connect.createStatement();
+			ResultSet resultats=s.executeQuery(req);
+			
+			while(resultats.next()){
+				//Compte c= new Compte();
+				//c.setNumero(resultats.getInt(1));
+				listClient.add(resultats.getInt(1));
+			}
+			connect.close();
+		}catch(SQLException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		Integer[] codes = new Integer[listClient.size()];
+		int i =0;
+		for(int c : listClient)
+			codes[i++]=c;
+		return codes;
+		//return (Integer[])listClient.;
+	}
 	
 }

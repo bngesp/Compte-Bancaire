@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import Modele.gestionBanque.MdlConnexionClient;
-import Vue.VueClient;
-import Vue.VueConnexionClient;
+import Vue.client.VueClient;
+import Vue.client.VueConnexionClient;
 
 public class CtlConnexionClient{
 	
